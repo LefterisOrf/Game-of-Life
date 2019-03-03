@@ -130,7 +130,6 @@ int main(int argc, char  *argv[])
 	MPI_Cart_rank( new_comm, tempcoords, &temprank);
 	MPI_Send_init(&current[arraysize-1][0], arraysize, MPI_INT, temprank, 20, new_comm, &sendS);
 	MPI_Recv_init(&south[0], arraysize, MPI_INT, temprank, 21, new_comm, &recvS);
-	
 
 	tempcoords[0] = coords[0];// West
 	tempcoords[1] = coords[1]-1;
@@ -190,7 +189,7 @@ int main(int argc, char  *argv[])
 		MPI_Wait(&sendNE,&status);
 		MPI_Wait(&sendNW,&status);
 		MPI_Wait(&sendSE,&status);
-		MPI_Wait(&sendSW,&status);		
+		MPI_Wait(&sendSW,&status);
 		MPI_Wait(&recvE,&status);
 		MPI_Wait(&recvW,&status);
 		MPI_Wait(&recvN,&status);
@@ -208,7 +207,7 @@ int main(int argc, char  *argv[])
 				}
 			}
 			#pragma omp section
-			{	
+			{
 				for (j = 1; j < arraysize-1; ++j)//calculate the left column
 				{
 					neighbours = calculate_neighbours_nsew('w', west, current, arraysize, j);
@@ -262,7 +261,6 @@ int main(int argc, char  *argv[])
 				//for(int k = 0; k < numprocs; ++k)temp[k]=-1;
 				MPI_Gather(all_dead_no_change,2,MPI_INT,temp,2,MPI_INT,0,new_comm);//gather from all the processes the all_dead nochange matrix 
 
-			
 			}
 			else if (rank!=0)MPI_Gather(all_dead_no_change,2,MPI_INT,temp,2,MPI_INT,0,new_comm);//all the processes except for process 0 send their all_dead_no_change matrix
 			if(rank==0)
